@@ -32,6 +32,8 @@ const options = {
 
 // Main App Logic
 async function initMainApp() {
+  const { createPinia } = Pinia;
+
   try {
     const App = await loadModule('./vue/App.vue', options);
     const app = createApp(App);

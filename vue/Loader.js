@@ -68,6 +68,25 @@ export default {
         }
       },
       {
+        id: 'libraries',
+        label: 'Libraries',
+        action: async () => {
+          const arrLibs = [
+            // Vue Demi (for Vue 2/3 compatibility libraries)
+            'https://unpkg.com/vue-demi',
+            // Pinia - State Management
+            'https://cdn.jsdelivr.net/npm/pinia@3.0.4/dist/pinia.iife.prod.js',
+          ];
+
+          for (const libUrl of arrLibs) {
+            currentAction.value = `Loading ${libUrl}...`;
+            await loadJs(libUrl);
+          }
+
+          await sleep(500);
+        }
+      },
+      {
         id: 'components',
         label: 'Components',
         action: async () => {
@@ -170,6 +189,50 @@ export default {
 
       if (!hasError.value)
         finishLoadApp();
+    };
+
+    const loadJs = async (src) => {
+      let finalUrl = src;
+      try {
+        const res = await fetch(src);
+        if (!res.ok) throw new Error(`Failed to load ${src}: ${res.status} ${res.statusText}`);
+        finalUrl = res.url;
+      } catch (e) {
+        throw new Error(`Network error checking ${src}: ${e.message}`);
+      }
+
+      return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.crossOrigin = "anonymous";
+
+        const errorHandler = (event) => {
+          if (event.filename === finalUrl || event.filename === src) {
+            cleanup();
+            reject(new Error(`Script execution failed: ${event.message}`));
+          }
+        };
+
+        const cleanup = () => {
+          window.removeEventListener('error', errorHandler);
+          script.onload = null;
+          script.onerror = null;
+        };
+
+        window.addEventListener('error', errorHandler);
+
+        script.onload = () => {
+          cleanup();
+          resolve();
+        };
+
+        script.onerror = () => {
+          cleanup();
+          reject(new Error(`Failed to load script tag: ${src}`));
+        };
+
+        document.head.appendChild(script);
+      });
     };
 
     return {
