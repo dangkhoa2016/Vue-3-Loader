@@ -23,7 +23,10 @@ export default {
       initializing: 'Initialisierung...',
       loading: 'Lade {item}...',
       starting_app: 'Starte Hauptanwendung...',
+      error_flag: 'Fehler',
       error_loading: 'Fehler beim Laden von [{stage}]: {message}',
+      oasis_route: 'Oasenroute',
+      oasis_tagline: 'Durch den heißen Sand, die Oase finden',
     },
     errors: {
       failed_to_load: 'Fehler beim Laden von {item}: {message}',

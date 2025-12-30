@@ -23,7 +23,10 @@ export default {
       initializing: '初期化中...',
       loading: '{item} を読み込み中...',
       starting_app: 'メインアプリを起動中...',
+      error_flag: 'エラー',
       error_loading: '[{stage}] の読み込み中にエラーが発生しました: {message}',
+      oasis_route: 'オアシスの旅路',
+      oasis_tagline: '灼熱の砂を越えて、オアシスを見つける',
     },
     errors: {
       failed_to_load: '{item} の読み込みに失敗しました: {message}',

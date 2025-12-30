@@ -23,7 +23,10 @@ export default {
       initializing: '초기화 중...',
       loading: '{item} 로드 중...',
       starting_app: '메인 앱 시작 중...',
+      error_flag: '오류',
       error_loading: '[{stage}] 로드 중 오류 발생: {message}',
+      oasis_route: '오아시스 여정',
+      oasis_tagline: '뜨거운 모래를 지나 오아시스를 찾으세요',
     },
     errors: {
       failed_to_load: '{item} 로드 실패: {message}',

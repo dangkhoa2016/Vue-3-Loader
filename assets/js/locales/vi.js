@@ -23,7 +23,10 @@ export default {
       initializing: 'Đang khởi tạo...',
       loading: 'Đang tải {item}...',
       starting_app: 'Đang khởi động ứng dụng chính...',
+      error_flag: 'LỖI',
       error_loading: 'Lỗi khi tải [{stage}]: {message}',
+      oasis_route: 'Hành trình ốc đảo',
+      oasis_tagline: 'Đi qua cát nóng, tìm thấy ốc đảo',
     },
     errors: {
       failed_to_load: 'Không thể tải {item}: {message}',
