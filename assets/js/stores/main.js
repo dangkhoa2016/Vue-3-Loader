@@ -2,7 +2,7 @@ const { defineStore } = Pinia;
 
 export const useMainStore = defineStore('main', {
   state: () => ({
-    message: 'Hello from Pinia Store!',
+    message: 'message.pinia_message',
     count: 0,
     loadedAt: null
   }),

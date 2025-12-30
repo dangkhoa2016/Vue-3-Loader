@@ -1,4 +1,5 @@
 const { createI18n } = VueI18n;
+import { sleep } from './helper.js';
 
 let i18n;
 let loadedLanguages;
@@ -48,6 +49,12 @@ export async function loadLanguageAsync(lang) {
 
   // If the language hasn't been loaded yet
   try {
+    if (loadedLanguages.length > 0) {
+      // Artificial delay to simulate loading time
+      await sleep(2000);
+    }
+
+    // console.log(`[i18n] Loading language file for: ${lang}`);
     const module = await import(`./locales/${lang}.js`);
     let messages = module.default || module;
     
@@ -60,7 +67,7 @@ export async function loadLanguageAsync(lang) {
     
     i18n.global.setLocaleMessage(lang, messages);
     
-    console.log(`[i18n] Available locales:`, i18n.global.availableLocales);
+    // console.log(`[i18n] Available locales:`, i18n.global.availableLocales);
     console.log(`[i18n] Messages for ${lang}:`, i18n.global.getLocaleMessage(lang));
     
     loadedLanguages.push(lang);

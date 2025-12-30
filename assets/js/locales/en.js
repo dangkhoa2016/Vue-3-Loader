@@ -1,7 +1,9 @@
 export default {
   message: {
     hello: 'Hello world',
-    title: 'Vue 3 Loader with Pinia, Vue Demi and i18n',
+    title: 'Vue 3 Loader',
+    subtitle: 'Modern Vue 3 initialization toolkit with Pinia, Vue Demi, and i18n',
+    description: 'Designed to simplify the development process, providing a solid foundation for state management and application internationalization.',
     store_state: 'Store State',
     count: 'Count',
     loaded_at: 'Loaded At',
@@ -16,6 +18,7 @@ export default {
     initializing: 'Initializing...',
     loading: 'Loading {item}...',
     starting_app: 'Starting Main App...',
-    error_loading: 'Error loading {stage}: {message}'
+    error_loading: 'Error loading {stage}: {message}',
+    pinia_message: 'Hello from Pinia Store!'
   }
 };

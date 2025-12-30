@@ -21,7 +21,7 @@ body {
 }
 
 .loader-container {
-  width: 400px;
+  width: 600px;
   text-align: center;
   padding: 40px;
   background: white;
@@ -64,8 +64,8 @@ body {
   background-color: #198754 !important;
 }
 
-.bg-emerald {
-  background-color: #20c997 !important;
+.bg-brown {
+  background-color: #b5651d !important;
 }
 
 .bg-pink {

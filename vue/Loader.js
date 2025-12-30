@@ -1,7 +1,6 @@
 import { reactive, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-
-const sleep = ms => new Promise(r => setTimeout(r, ms));
+import { sleep } from '../assets/js/helper.js';
 
 export default {
   setup() {
@@ -145,17 +144,16 @@ export default {
     const progressClass = computed(() => {
       const p = totalProgress.value;
       const stageCount = stages.value.length;
-      
-      // Calculate current stage index (0 to stageCount-1)
-      let index = Math.floor((p / 100) * stageCount);
-      // Clamp index for 100% case
-      if (index >= stageCount) index = stageCount - 1;
+      const epsilon = 1e-6; // avoid floating point rounding down one bucket
 
-      // Last stage is always success
-      if (index === stageCount - 1) return 'bg-success';
+      const bucketSize = 100 / stageCount;
+      // Map progress into 0...(stageCount-1)
+      let index = Math.min(Math.floor((p + epsilon) / bucketSize), stageCount - 1);
 
-      // Cycle through other colors for intermediate stages
-      const colors = ['bg-info', 'bg-warning', 'bg-purple', 'bg-emerald', 'bg-pink', 'bg-gray'];
+      // Show success only when we are actually done (or essentially done)
+      if (completed.value || p >= 99.9) return 'bg-success';
+
+      const colors = ['bg-info', 'bg-warning', 'bg-purple', 'bg-pink', 'bg-brown', 'bg-gray'];
       return colors[index % colors.length];
     });
 
