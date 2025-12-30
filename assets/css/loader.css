@@ -1,18 +1,19 @@
+/* Modern Dark Glassmorphism Theme */
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f0f2f5;
+  font-family: 'Inter', 'Segoe UI', sans-serif;
+  background-color: #0f172a;
+  color: #e2e8f0;
 }
 
-/* Loader Styles - Inlined to ensure immediate display */
 .loader-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: white;
+  background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
   z-index: 9999;
   display: flex;
   justify-content: center;
@@ -20,89 +21,108 @@ body {
   flex-direction: column;
 }
 
+.loader-overlay::before {
+  content: '';
+  position: absolute;
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.1) 0%, transparent 50%);
+  animation: rotate 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 .loader-container {
-  width: 600px;
+  width: 500px;
   text-align: center;
-  padding: 40px;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 3rem;
+  background: rgba(30, 41, 59, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 24px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  z-index: 1;
+}
+
+.loader-title {
+  font-size: 1.75rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+  font-weight: 700;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.025em;
 }
 
 .progress-bar-container {
   width: 100%;
-  height: 8px;
-  background-color: #e9ecef;
-  border-radius: 4px;
-  margin: 25px 0;
+  height: 6px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  margin: 2rem 0;
   overflow: hidden;
 }
 
 .progress-bar {
   height: 100%;
-  background-color: #0d6efd;
-  background-image: linear-gradient(45deg, rgba(255, 255, 255, .15) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, .15) 50%, rgba(255, 255, 255, .15) 75%, transparent 75%, transparent);
-  background-size: 1rem 1rem;
-  transition: width 0.5s ease, background-color 0.5s ease;
-  border-radius: 4px;
-  animation: progress-bar-stripes 1s linear infinite;
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
 }
 
-.bg-info {
-  background-color: #0d6efd !important;
-}
-
-.bg-warning {
-  background-color: #fd7e14 !important;
-}
-
-.bg-purple {
-  background-color: #6f42c1 !important;
-}
-
-.bg-success {
-  background-color: #198754 !important;
-}
-
-.bg-brown {
-  background-color: #b5651d !important;
-}
-
-.bg-pink {
-  background-color: #d63384 !important;
-}
-
-.bg-gray {
-  background-color: #6c757d !important;
-}
-
-@keyframes progress-bar-stripes {
-  0% {
-    background-position: 1rem 0;
-  }
-
-  100% {
-    background-position: 0 0;
-  }
-}
+.bg-info { background: linear-gradient(90deg, #3b82f6, #06b6d4) !important; }
+.bg-warning { background: linear-gradient(90deg, #f59e0b, #d97706) !important; }
+.bg-purple { background: linear-gradient(90deg, #8b5cf6, #6366f1) !important; }
+.bg-success { background: linear-gradient(90deg, #10b981, #059669) !important; }
+.bg-brown { background: linear-gradient(90deg, #a16207, #854d0e) !important; }
+.bg-pink { background: linear-gradient(90deg, #ec4899, #db2777) !important; }
+.bg-gray { background: linear-gradient(90deg, #94a3b8, #64748b) !important; }
 
 .stage-indicators {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
-  color: #adb5bd;
-  margin-bottom: 10px;
+  font-size: 0.875rem;
+  color: #64748b;
+  margin-bottom: 1.5rem;
   font-weight: 500;
 }
 
 .stage-item {
   position: relative;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 4px 12px;
+  border-radius: 99px;
 }
 
 .stage-item.active {
-  color: #0d6efd;
-  font-weight: 700;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  font-weight: 600;
+}
+
+.status-text {
+  margin-top: 1rem;
+  color: #94a3b8;
+  font-size: 0.95rem;
+  transition: color 0.3s;
+}
+
+.status-text.has-error {
+  color: #ef4444;
+}
+
+.loader-spinner {
+  width: 40px;
+  margin-top: 1.5rem;
+  opacity: 0.8;
+  filter: invert(1) hue-rotate(180deg);
 }
 
 /* Transitions */

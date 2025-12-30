@@ -2,7 +2,7 @@
   <transition name="fade">
     <div v-if="!completed" class="loader-overlay">
       <div class="loader-container">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">{{ $t('message.title') }}</h1>
+        <h1 class="loader-title">{{ $t('message.title') }}</h1>
         
         <div class="progress-bar-container">
           <div class="progress-bar" :class="progressClass" :style="{ width: totalProgress + '%' }"></div>
@@ -19,10 +19,10 @@
           </div>
         </div>
 
-        <div style="margin-top: 15px;" :style="{ color: hasError ? '#dc3545' : '#555' }">
+        <div class="status-text" :class="{ 'has-error': hasError }">
           {{ currentAction }} <span v-if="!hasError">({{ Math.round(totalProgress) }}%)</span>
         </div>
-        <img src="/assets/img/loader.gif" style="width: 50px; margin-top: 20px;" onerror="this.style.display='none'" />
+        <img src="/assets/img/loader.gif" class="loader-spinner" onerror="this.style.display='none'" />
       </div>
     </div>
   </transition>
