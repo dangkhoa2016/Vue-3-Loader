@@ -1,28 +1,43 @@
 <template>
   <transition name="fade">
     <div v-if="!completed" class="loader-overlay">
-      <div class="loader-container">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">{{ $t('message.title') }}</h1>
-        
-        <div class="progress-bar-container">
-          <div class="progress-bar" :class="progressClass" :style="{ width: totalProgress + '%' }"></div>
+      <div class="loader-card">
+        <div class="header-section">
+          <h1 class="title">{{ $t('message.title') }}</h1>
+          <div class="subtitle">{{ currentAction }}</div>
         </div>
 
-        <div class="stage-indicators">
+        <div class="stepper-container">
+          <div class="connector-track">
+            <div class="connector-fill" :style="{ width: connectorFillPercent + '%' }"></div>
+          </div>
+
           <div 
-            v-for="stage in stages" 
+            v-for="(stage, index) in stages" 
             :key="stage.id" 
-            class="stage-item" 
-            :class="{ active: progress[stage.id] === 100 }"
+            class="step-item" 
+            :class="{ 
+              'active': progress[stage.id] > 0 && progress[stage.id] < 100,
+              'completed': progress[stage.id] === 100 
+            }"
           >
-            {{ stage.label }}
+            <div class="circle-wrapper">
+              <div class="circle-bg"></div>
+              <div class="circle-content">
+                <span v-if="progress[stage.id] === 100" class="check-icon">✓</span>
+                <span v-else class="step-number">{{ index + 1 }}</span>
+              </div>
+              <!-- Ripple effect for active state -->
+              <div class="ripple" v-if="progress[stage.id] > 0 && progress[stage.id] < 100"></div>
+            </div>
+            <div class="step-label">{{ stage.label }}</div>
           </div>
         </div>
 
-        <div style="margin-top: 15px;" :style="{ color: hasError ? '#dc3545' : '#555' }">
-          {{ currentAction }} <span v-if="!hasError">({{ Math.round(totalProgress) }}%)</span>
+        <div class="footer-status" :class="{ 'has-error': hasError }">
+          <div class="percentage">{{ Math.round(totalProgress) }}%</div>
+          <div class="mini-spinner" v-if="!hasError && totalProgress < 100"></div>
         </div>
-        <img src="/assets/img/loader.gif" style="width: 50px; margin-top: 20px;" onerror="this.style.display='none'" />
       </div>
     </div>
   </transition>

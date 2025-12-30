@@ -141,6 +141,18 @@ export default {
       return (current / total) * 100;
     });
 
+    // Snap connector fill to stage completion: each finished stage advances one segment (n circles => n-1 segments)
+    const connectorFillPercent = computed(() => {
+      const count = stages.value.length;
+      if (count <= 1) return 0;
+
+      const stagePortion = 100 / count; // percent per stage
+      const completedStages = Math.floor((totalProgress.value + 1e-6) / stagePortion);
+      const segmentsFilled = Math.min(completedStages, count - 1); // segments between circles
+
+      return (segmentsFilled / (count - 1)) * 100;
+    });
+
     const progressClass = computed(() => {
       const p = totalProgress.value;
       const stageCount = stages.value.length;
@@ -245,6 +257,7 @@ export default {
       currentStage,
       completed,
       totalProgress,
+      connectorFillPercent,
       progressClass,
       startLoading,
       hasError
