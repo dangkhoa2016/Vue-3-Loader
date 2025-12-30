@@ -24,6 +24,9 @@ export default {
       loading: '{item} 로드 중...',
       starting_app: '메인 앱 시작 중...',
       error_loading: '[{stage}] 로드 중 오류 발생: {message}',
+      coral_badge: '산호 릴레이',
+      coral_tagline: '파도가 한 걸음씩 밀어준다',
+      error_flag: '오류가 발생했습니다',
     },
     errors: {
       failed_to_load: '{item} 로드 실패: {message}',

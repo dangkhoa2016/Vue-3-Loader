@@ -24,6 +24,9 @@ export default {
       loading: '{item} を読み込み中...',
       starting_app: 'メインアプリを起動中...',
       error_loading: '[{stage}] の読み込み中にエラーが発生しました: {message}',
+      coral_badge: 'コーラルリレー',
+      coral_tagline: '波が一歩一歩を押し上げる',
+      error_flag: 'エラーが発生しました',
     },
     errors: {
       failed_to_load: '{item} の読み込みに失敗しました: {message}',

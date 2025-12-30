@@ -24,6 +24,9 @@ export default {
       loading: 'Loading {item}...',
       starting_app: 'Starting Main App...',
       error_loading: 'Error loading [{stage}]: {message}',
+      coral_badge: 'Coral Relay',
+      coral_tagline: 'Waves lift every step forward',
+      error_flag: 'An error occurred',
     },
     errors: {
       failed_to_load: 'Failed to load {item}: {message}',

@@ -24,6 +24,9 @@ export default {
       loading: 'Đang tải {item}...',
       starting_app: 'Đang khởi động ứng dụng chính...',
       error_loading: 'Lỗi khi tải [{stage}]: {message}',
+      coral_badge: 'Tiếp Sức San Hô',
+      coral_tagline: 'Làn sóng nâng từng bước tiến',
+      error_flag: 'Có lỗi xảy ra',
     },
     errors: {
       failed_to_load: 'Không thể tải {item}: {message}',

@@ -157,6 +157,39 @@ export default {
       return colors[index % colors.length];
     });
 
+    // Precomputed squid drift data for stable, natural motion
+    const squidSources = [
+      'https://cdn-icons-png.freepik.com/128/11355/11355124.png',
+      'https://cdn-icons-png.freepik.com/128/16449/16449601.png',
+      'https://cdn-icons-png.freepik.com/128/170/170462.png',
+      'https://cdn-icons-png.freepik.com/128/7593/7593170.png',
+      'https://cdn-icons-png.freepik.com/128/5559/5559826.png',
+      'https://cdn-icons-png.freepik.com/128/3608/3608554.png',
+      'https://cdn-icons-png.freepik.com/128/8708/8708475.png',
+      'https://cdn-icons-png.freepik.com/128/468/468391.png',
+      'https://cdn-icons-png.freepik.com/128/8710/8710232.png'
+    ];
+
+    const makeSquid = (idx, src) => {
+      const durNum = 12 + Math.random() * 6; // 12s - 18s
+      return {
+        id: `squid-${idx}-${Date.now()}-${Math.random().toString(16).slice(2, 6)}`,
+        src,
+        x: `${5 + Math.random() * 90}%`,
+        dur: `${durNum}s`,
+        delay: `${Math.random() * 1.8}s`,
+        xWiggle: `${4 + Math.random() * 10}px`
+      };
+    };
+
+    const driftSquids = ref(squidSources.map((src, idx) => makeSquid(idx, src)));
+
+    const reshuffleSquid = (idx) => {
+      const src = squidSources[idx % squidSources.length];
+      const next = makeSquid(idx, src);
+      driftSquids.value.splice(idx, 1, next);
+    };
+
     const finishLoadApp = () => {
       // Mark as completed
       completed.value = true;
@@ -247,7 +280,9 @@ export default {
       totalProgress,
       progressClass,
       startLoading,
-      hasError
+      hasError,
+      driftSquids,
+      reshuffleSquid
     };
   },
   mounted() {

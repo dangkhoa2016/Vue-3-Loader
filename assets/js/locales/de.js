@@ -24,6 +24,9 @@ export default {
       loading: 'Lade {item}...',
       starting_app: 'Starte Hauptanwendung...',
       error_loading: 'Fehler beim Laden von [{stage}]: {message}',
+      coral_badge: 'Korallen-Staffel',
+      coral_tagline: 'Wellen tragen jeden Schritt nach vorn',
+      error_flag: 'Ein Fehler ist aufgetreten',
     },
     errors: {
       failed_to_load: 'Fehler beim Laden von {item}: {message}',
