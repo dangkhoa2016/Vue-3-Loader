@@ -24,6 +24,7 @@ export default {
       loading: 'Lade {item}...',
       starting_app: 'Starte Hauptanwendung...',
       error_loading: 'Fehler beim Laden von [{stage}]: {message}',
+      system_status: 'Systemstatus'
     },
     errors: {
       failed_to_load: 'Fehler beim Laden von {item}: {message}',

@@ -1,8 +1,16 @@
 <template>
   <transition name="fade">
     <div v-if="!completed" class="loader-overlay">
+      <div class="scan-line"></div>
       <div class="loader-container">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">{{ $t('message.title') }}</h1>
+        <div class="hud-corner top-left"></div>
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+        <div class="hud-corner bottom-right"></div>
+        
+        <h1 class="loader-title">
+          <span class="prefix">></span> {{ $t('message.title') }}<span class="cursor">_</span>
+        </h1>
         
         <div class="progress-bar-container">
           <div class="progress-bar" :class="progressClass" :style="{ width: totalProgress + '%' }"></div>
@@ -15,14 +23,19 @@
             class="stage-item" 
             :class="{ active: progress[stage.id] === 100 }"
           >
-            {{ stage.label }}
+            [{{ progress[stage.id] === 100 ? 'X' : ' ' }}] {{ stage.label }}
           </div>
         </div>
 
-        <div style="margin-top: 15px;" :style="{ color: hasError ? '#dc3545' : '#555' }">
-          {{ currentAction }} <span v-if="!hasError">({{ Math.round(totalProgress) }}%)</span>
+        <div class="status-text" :class="{ 'has-error': hasError }">
+          <div class="status-header">
+            <span class="system-msg">{{ $t('message.loader.system_status') }}</span>
+            <span v-if="!hasError" class="percentage">[{{ Math.round(totalProgress) }}%]</span>
+          </div>
+          <div class="status-detail">{{ currentAction }}</div>
         </div>
-        <img src="/assets/img/loader.gif" style="width: 50px; margin-top: 20px;" onerror="this.style.display='none'" />
+        <!-- Hidden spinner for this theme, or styled differently -->
+        <img src="/assets/img/loader.gif" class="loader-spinner" onerror="this.style.display='none'" />
       </div>
     </div>
   </transition>
