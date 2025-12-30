@@ -1,9 +1,13 @@
 const { createApp } = Vue;
 const { loadModule } = window['vue3-sfc-loader'];
+import * as I18nModule from './i18n.js';
+const { loadLanguageAsync, detectBrowserLanguage } = I18nModule;
 
 const options = {
   moduleCache: {
-    vue: Vue
+    vue: Vue,
+    'vue-i18n': VueI18n,
+    '../assets/js/i18n.js': I18nModule,
   },
   async getFile(url) {
     const res = await fetch(url);
@@ -39,6 +43,11 @@ async function initMainApp() {
     const app = createApp(App);
     const pinia = createPinia();
     app.use(pinia);
+    app.use(window.i18nInstance);
+
+    // Language is already loaded by loaderApp, but we can ensure it here if needed
+    // or just let it be. The i18n instance is shared.
+
     app.mount('#app');
     return true;
   } catch (err) {
@@ -69,8 +78,16 @@ window.initMainApp = initMainApp;
 // Initialize Loader
 (async () => {
   try {
+    // Detect and load initial language BEFORE mounting loader
+    const initialLang = detectBrowserLanguage();
+    await loadLanguageAsync(initialLang);
+
     const Loader = await loadModule('./vue/Loader.vue', options);
     const loaderApp = createApp(Loader);
+    
+    // Use i18n in loaderApp
+    loaderApp.use(window.i18nInstance);
+    
     loaderApp.mount('#loader');
   } catch (err) {
     console.error("Failed to load loader component:", err);

@@ -2,7 +2,7 @@
   <transition name="fade">
     <div v-if="!completed" class="loader-overlay">
       <div class="loader-container">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">Main App</h1>
+        <h1 style="font-size: 2rem; margin-bottom: 1rem;">{{ $t('message.title') }}</h1>
         
         <div class="progress-bar-container">
           <div class="progress-bar" :class="progressClass" :style="{ width: totalProgress + '%' }"></div>

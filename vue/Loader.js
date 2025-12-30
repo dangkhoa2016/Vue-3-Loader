@@ -1,17 +1,19 @@
 import { reactive, ref, computed } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 export default {
   setup() {
-    const currentAction = ref('Initializing...');
+    const { t } = useI18n({ useScope: 'global' });
+    const currentAction = ref(t('message.initializing'));
     const currentStage = ref('');
     const completed = ref(false);
     const hasError = ref(false);
 
     // Helper functions
     const safeFetch = async (url) => {
-      currentAction.value = `Loading ${url}...`;
+      currentAction.value = t('message.loading', { item: url });
       const res = await fetch(url);
       if (!res.ok) {
         const msg = res.status === 404 ? 'Not Found' : (res.statusText || 'Something went wrong');
@@ -21,7 +23,7 @@ export default {
     };
 
     const safeImport = async (url) => {
-      currentAction.value = `Loading ${url}...`;
+      currentAction.value = t('message.loading', { item: url });
       try {
         return await import(url);
       } catch (e) {
@@ -37,7 +39,7 @@ export default {
     };
 
     const loadStyle = (href) => {
-      currentAction.value = `Loading ${href}...`;
+      currentAction.value = t('message.loading', { item: href });
       return new Promise((resolve, reject) => {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
@@ -58,10 +60,10 @@ export default {
     };
 
     // Configuration for stages
-    const stages = [
+    const stages = computed(() => [
       {
         id: 'assets',
-        label: 'Assets',
+        label: t('message.assets') || 'Assets',
         action: async () => {
           await loadStyle('./assets/css/styles.css');
           await sleep(500);
@@ -69,7 +71,7 @@ export default {
       },
       {
         id: 'libraries',
-        label: 'Libraries',
+        label: t('message.libraries') || 'Libraries',
         action: async () => {
           const arrLibs = [
             // Vue Demi (for Vue 2/3 compatibility libraries)
@@ -79,7 +81,7 @@ export default {
           ];
 
           for (const libUrl of arrLibs) {
-            currentAction.value = `Loading ${libUrl}...`;
+            currentAction.value = t('message.loading', { item: libUrl });
             await loadJs(libUrl);
           }
 
@@ -88,7 +90,7 @@ export default {
       },
       {
         id: 'components',
-        label: 'Components',
+        label: t('message.components') || 'Components',
         action: async () => {
           await safeFetch('./vue/App.vue');
           await sleep(500);
@@ -96,7 +98,7 @@ export default {
       },
       {
         id: 'store',
-        label: 'Store',
+        label: t('message.store') || 'Store',
         action: async () => {
           await safeImport('../assets/js/stores/main.js');
           await sleep(500);
@@ -104,9 +106,9 @@ export default {
       },
       {
         id: 'app',
-        label: 'App',
+        label: t('message.app') || 'App',
         action: async () => {
-          currentAction.value = 'Starting Main App...';
+          currentAction.value = t('message.starting_app');
           if (window.initMainApp) {
             const result = await window.initMainApp();
             if (result === false)
@@ -119,27 +121,30 @@ export default {
         }
       }, {
         id: 'finalizing',
-        label: 'Finalizing',
+        label: t('message.finalizing') || 'Finalizing',
         action: async () => {
-          currentAction.value = 'Finalizing...';
+          currentAction.value = t('message.finalizing') + '...';
           await sleep(1500);
         }
       }
-    ];
+    ]);
 
     // Initialize progress
     const progress = reactive({});
-    stages.forEach(s => progress[s.id] = 0);
+    // Note: stages is now a computed, so we need to watch it or init differently
+    // But for simplicity, we can just init all potential IDs or init on start
+    // Let's just init based on the first value
+    stages.value.forEach(s => progress[s.id] = 0);
 
     const totalProgress = computed(() => {
-      const total = stages.length * 100;
-      const current = stages.reduce((acc, stage) => acc + (progress[stage.id] || 0), 0);
+      const total = stages.value.length * 100;
+      const current = stages.value.reduce((acc, stage) => acc + (progress[stage.id] || 0), 0);
       return (current / total) * 100;
     });
 
     const progressClass = computed(() => {
       const p = totalProgress.value;
-      const stageCount = stages.length;
+      const stageCount = stages.value.length;
       
       // Calculate current stage index (0 to stageCount-1)
       let index = Math.floor((p / 100) * stageCount);
@@ -173,17 +178,17 @@ export default {
 
     const startLoading = async () => {
       try {
-        for (const stage of stages) {
+        for (const stage of stages.value) {
           currentStage.value = stage.label;
           await stage.action();
           progress[stage.id] = 100;
-          // await sleep(1000); // Delay between stages
+          await sleep(2000); // Delay between stages
         }
       } catch (e) {
         console.log('Error during loading stages:', e);
         hasError.value = true;
         const msg = e instanceof Error ? e.message : (typeof e === 'string' ? e : 'Unknown error');
-        currentAction.value = `Error loading ${currentStage.value}: ${msg}`;
+        currentAction.value = t('message.error_loading', { stage: currentStage.value, message: msg });
         console.error(e);
       }
 
