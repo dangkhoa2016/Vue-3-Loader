@@ -1,28 +1,67 @@
 <template>
   <transition name="fade">
     <div v-if="!completed" class="loader-overlay">
-      <div class="loader-container">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">{{ $t('message.title') }}</h1>
-        
-        <div class="progress-bar-container">
-          <div class="progress-bar" :class="progressClass" :style="{ width: totalProgress + '%' }"></div>
-        </div>
-
-        <div class="stage-indicators">
-          <div 
-            v-for="stage in stages" 
-            :key="stage.id" 
-            class="stage-item" 
-            :class="{ active: progress[stage.id] === 100 }"
-          >
-            {{ stage.label }}
+      <div class="iso-scene">
+        <div class="iso-world">
+          <!-- The Stack -->
+          <div class="stack-container">
+            <!-- Base -->
+            <div class="stack-base">
+               <div class="face top"></div>
+               <div class="face side-1"></div>
+               <div class="face side-2"></div>
+            </div>
+            
+            <!-- Dynamic Layers for Stages -->
+            <div 
+              v-for="(stage, index) in stages" 
+              :key="stage.id"
+              class="stack-layer"
+              :class="{ 
+                'active': progress[stage.id] > 0, 
+                'completed': progress[stage.id] === 100,
+                'current': progress[stage.id] > 0 && progress[stage.id] < 100
+              }"
+              :style="{ 
+                '--layer-index': index, 
+                'z-index': stages.length - index 
+              }"
+            >
+              <div class="layer-plate">
+                <div class="face top"></div>
+                <div class="face side-1"></div>
+                <div class="face side-2"></div>
+              </div>
+              
+              <!-- Floating Label -->
+              <div class="layer-label">
+                <div class="label-line"></div>
+                <div class="label-text">
+                  <span class="status-dot"></span>
+                  {{ stage.label }}
+                  <span class="percentage" v-if="progress[stage.id] > 0">{{ Math.round(progress[stage.id]) }}%</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div style="margin-top: 15px;" :style="{ color: hasError ? '#dc3545' : '#555' }">
-          {{ currentAction }} <span v-if="!hasError">({{ Math.round(totalProgress) }}%)</span>
+        <!-- HUD Overlay -->
+        <div class="hud-overlay">
+          <div class="header">
+            <h1>{{ $t('message.title') }}</h1>
+            <div class="sub-header">{{ $t('message.loader.system_init_sequence') }}</div>
+          </div>
+          
+          <div class="footer-status">
+            <div class="action-text">
+              <span class="blink">></span> {{ currentAction }}
+            </div>
+            <div class="total-progress">
+              {{ Math.round(totalProgress) }}<small>%</small>
+            </div>
+          </div>
         </div>
-        <img src="/assets/img/loader.gif" style="width: 50px; margin-top: 20px;" onerror="this.style.display='none'" />
       </div>
     </div>
   </transition>
