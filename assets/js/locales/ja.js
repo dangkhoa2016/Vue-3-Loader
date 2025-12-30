@@ -24,6 +24,9 @@ export default {
       loading: '{item} を読み込み中...',
       starting_app: 'メインアプリを起動中...',
       error_loading: '[{stage}] の読み込み中にエラーが発生しました: {message}',
+      status_label: 'ステータス:',
+      velocity_label: '速度:',
+      critical_failure: '重大な障害',
     },
     errors: {
       failed_to_load: '{item} の読み込みに失敗しました: {message}',

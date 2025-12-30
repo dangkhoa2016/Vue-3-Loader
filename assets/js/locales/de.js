@@ -24,6 +24,9 @@ export default {
       loading: 'Lade {item}...',
       starting_app: 'Starte Hauptanwendung...',
       error_loading: 'Fehler beim Laden von [{stage}]: {message}',
+      status_label: 'STATUS:',
+      velocity_label: 'GESCHWINDIGKEIT:',
+      critical_failure: 'KRITISCHER FEHLER',
     },
     errors: {
       failed_to_load: 'Fehler beim Laden von {item}: {message}',

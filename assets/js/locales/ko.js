@@ -24,6 +24,9 @@ export default {
       loading: '{item} 로드 중...',
       starting_app: '메인 앱 시작 중...',
       error_loading: '[{stage}] 로드 중 오류 발생: {message}',
+      status_label: '상태:',
+      velocity_label: '속도:',
+      critical_failure: '치명적 오류',
     },
     errors: {
       failed_to_load: '{item} 로드 실패: {message}',
