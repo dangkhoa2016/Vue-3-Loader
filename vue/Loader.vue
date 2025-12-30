@@ -1,28 +1,47 @@
 <template>
   <transition name="fade">
     <div v-if="!completed" class="loader-overlay">
-      <div class="loader-container">
-        <h1 style="font-size: 2rem; margin-bottom: 1rem;">{{ $t('message.title') }}</h1>
-        
-        <div class="progress-bar-container">
-          <div class="progress-bar" :class="progressClass" :style="{ width: totalProgress + '%' }"></div>
-        </div>
-
-        <div class="stage-indicators">
-          <div 
-            v-for="stage in stages" 
-            :key="stage.id" 
-            class="stage-item" 
-            :class="{ active: progress[stage.id] === 100 }"
-          >
-            {{ stage.label }}
+      <div class="pixel-window">
+        <div class="window-header">
+          <span class="window-title">SYSTEM_LOADER.EXE</span>
+          <div class="window-controls">
+            <span class="control">_</span>
+            <span class="control">□</span>
+            <span class="control">×</span>
           </div>
         </div>
+        
+        <div class="window-content">
+          <h1 class="pixel-title">{{ $t('message.title') }}</h1>
+          
+          <div class="pixel-scene">
+            <div class="pixel-ground"></div>
+            <div class="pixel-hero" :style="{ left: totalProgress + '%' }">
+              👾
+            </div>
+          </div>
 
-        <div style="margin-top: 15px;" :style="{ color: hasError ? '#dc3545' : '#555' }">
-          {{ currentAction }} <span v-if="!hasError">({{ Math.round(totalProgress) }}%)</span>
+          <div class="pixel-progress-container">
+            <div class="pixel-progress-bar" :class="progressClass" :style="{ width: totalProgress + '%' }"></div>
+          </div>
+
+          <div class="pixel-stages">
+            <div 
+              v-for="stage in stages" 
+              :key="stage.id" 
+              class="pixel-stage-item" 
+              :class="{ active: progress[stage.id] === 100 }"
+            >
+              <span class="check-box">[{{ progress[stage.id] === 100 ? '✓' : ' ' }}]</span>
+              {{ stage.label }}
+            </div>
+          </div>
+
+          <div class="pixel-status" :class="{ 'has-error': hasError }">
+            > {{ currentAction }}
+            <span v-if="!hasError" class="blink">_</span>
+          </div>
         </div>
-        <img src="/assets/img/loader.gif" style="width: 50px; margin-top: 20px;" onerror="this.style.display='none'" />
       </div>
     </div>
   </transition>
