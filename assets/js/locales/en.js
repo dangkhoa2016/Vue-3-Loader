@@ -24,6 +24,8 @@ export default {
       loading: 'Loading {item}...',
       starting_app: 'Starting Main App...',
       error_loading: 'Error loading [{stage}]: {message}',
+      system_ascension: 'System Ascension',
+      system_init_sequence: 'System Initialization Sequence',
     },
     errors: {
       failed_to_load: 'Failed to load {item}: {message}',

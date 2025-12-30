@@ -24,6 +24,8 @@ export default {
       loading: 'Đang tải {item}...',
       starting_app: 'Đang khởi động ứng dụng chính...',
       error_loading: 'Lỗi khi tải [{stage}]: {message}',
+      system_ascension: 'Thăng cấp hệ thống',
+      system_init_sequence: 'Trình tự khởi tạo hệ thống',
     },
     errors: {
       failed_to_load: 'Không thể tải {item}: {message}',

@@ -24,6 +24,8 @@ export default {
       loading: '{item} 로드 중...',
       starting_app: '메인 앱 시작 중...',
       error_loading: '[{stage}] 로드 중 오류 발생: {message}',
+      system_ascension: '시스템 어센션',
+      system_init_sequence: '시스템 초기화 시퀀스',
     },
     errors: {
       failed_to_load: '{item} 로드 실패: {message}',
