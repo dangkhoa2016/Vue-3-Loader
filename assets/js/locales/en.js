@@ -24,6 +24,8 @@ export default {
       loading: 'Loading {item}...',
       starting_app: 'Starting Main App...',
       error_loading: 'Error loading [{stage}]: {message}',
+      system_loading: 'System Loading',
+      system_diagnostic: 'System Diagnostic',
     },
     errors: {
       failed_to_load: 'Failed to load {item}: {message}',

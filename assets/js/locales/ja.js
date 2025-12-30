@@ -24,6 +24,8 @@ export default {
       loading: '{item} を読み込み中...',
       starting_app: 'メインアプリを起動中...',
       error_loading: '[{stage}] の読み込み中にエラーが発生しました: {message}',
+      system_loading: 'システムを読み込み中',
+      system_diagnostic: 'システム診断',
     },
     errors: {
       failed_to_load: '{item} の読み込みに失敗しました: {message}',
