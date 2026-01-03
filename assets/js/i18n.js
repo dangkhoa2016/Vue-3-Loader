@@ -23,6 +23,14 @@ if (window.i18nInstance) {
   window.i18nLoadedLanguages = loadedLanguages;
 }
 
+export const SUPPORTED_LANGUAGES = [
+  { code: 'en', label: 'English' },
+  { code: 'vi', label: 'Tiếng Việt' },
+  { code: 'ko', label: '한국어' },
+  { code: 'ja', label: '日本語' },
+  { code: 'de', label: 'Deutsch' }
+];
+
 export { i18n };
 
 function setI18nLanguage(lang) {
@@ -57,19 +65,19 @@ export async function loadLanguageAsync(lang) {
     // console.log(`[i18n] Loading language file for: ${lang}`);
     const module = await import(`./locales/${lang}.js`);
     let messages = module.default || module;
-    
+
     // Unwrap Proxy if needed and ensure plain object
     if (typeof messages === 'object') {
       messages = JSON.parse(JSON.stringify(messages));
     }
 
     console.log(`[i18n] Loading ${lang}`, messages);
-    
+
     i18n.global.setLocaleMessage(lang, messages);
-    
+
     // console.log(`[i18n] Available locales:`, i18n.global.availableLocales);
     console.log(`[i18n] Messages for ${lang}:`, i18n.global.getLocaleMessage(lang));
-    
+
     loadedLanguages.push(lang);
     return setI18nLanguage(lang);
   } catch (e) {
@@ -77,10 +85,13 @@ export async function loadLanguageAsync(lang) {
     throw e;
   }
 }
-
 export function detectBrowserLanguage() {
+  const savedLang = localStorage.getItem('user-locale');
+  if (savedLang) {
+    return savedLang;
+  }
   const lang = navigator.language || navigator.userLanguage;
   const shortLang = lang.split('-')[0];
-  const supported = ['en', 'vi', 'ko', 'ja', 'de'];
+  const supported = SUPPORTED_LANGUAGES.map(l => l.code);
   return supported.includes(shortLang) ? shortLang : 'en';
 }

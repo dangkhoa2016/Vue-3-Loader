@@ -1,28 +1,28 @@
 import { reactive, ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { sleep } from '../assets/js/helper.js';
+import { sleep } from '/assets/js/helper.js';
 
 export default {
   setup() {
     const { t } = useI18n({ useScope: 'global' });
-    const currentAction = ref(t('message.initializing'));
+    const currentAction = ref(t('message.loader.initializing'));
     const currentStage = ref('');
     const completed = ref(false);
     const hasError = ref(false);
 
     // Helper functions
     const safeFetch = async (url) => {
-      currentAction.value = t('message.loading', { item: url });
+      currentAction.value = t('message.loader.loading', { item: url });
       const res = await fetch(url);
       if (!res.ok) {
-        const msg = res.status === 404 ? 'Not Found' : (res.statusText || 'Something went wrong');
-        throw new Error(`Failed to load ${url}: ${msg}`);
+        const msg = res.status === 404 ? t('message.errors.not_found') : (res.statusText || t('message.errors.something_went_wrong'));
+        throw new Error(t('message.errors.failed_to_load', { item: url, message: msg }));
       }
       return res;
     };
 
     const safeImport = async (url) => {
-      currentAction.value = t('message.loading', { item: url });
+      currentAction.value = t('message.loader.loading', { item: url });
       try {
         return await import(url);
       } catch (e) {
@@ -30,29 +30,29 @@ export default {
         try {
           const res = await fetch(url);
           if (!res.ok) {
-            msg = res.status === 404 ? 'Not Found' : 'Something went wrong';
+            msg = res.status === 404 ? t('message.errors.not_found') : t('message.errors.something_went_wrong');
           }
         } catch (_) {}
-        throw new Error(`Failed to load ${url}: ${msg}`);
+        throw new Error(t('message.errors.failed_to_load', { item: url, message: msg }));
       }
     };
 
     const loadStyle = (href) => {
-      currentAction.value = t('message.loading', { item: href });
+      currentAction.value = t('message.loader.loading', { item: href });
       return new Promise((resolve, reject) => {
         const link = document.createElement('link');
         link.rel = 'stylesheet';
         link.href = href;
         link.onload = resolve;
         link.onerror = async () => {
-          let msg = 'Network Error';
+          let msg = t('message.errors.network_error');
           try {
             const res = await fetch(href);
             if (!res.ok) {
-              msg = res.status === 404 ? 'Not Found' : (res.statusText || 'Something went wrong');
+              msg = res.status === 404 ? t('message.errors.not_found') : (res.statusText || t('message.errors.something_went_wrong'));
             }
           } catch (_) {}
-          reject(new Error(`Failed to load ${href}: ${msg}`));
+          reject(new Error(t('message.errors.failed_to_load', { item: href, message: msg })));
         };
         document.head.appendChild(link);
       });
@@ -62,15 +62,15 @@ export default {
     const stages = computed(() => [
       {
         id: 'assets',
-        label: t('message.assets') || 'Assets',
+        label: t('message.loader.assets') || 'Assets',
         action: async () => {
-          await loadStyle('./assets/css/styles.css');
+          await loadStyle('/assets/css/styles.css');
           await sleep(500);
         }
       },
       {
         id: 'libraries',
-        label: t('message.libraries') || 'Libraries',
+        label: t('message.loader.libraries') || 'Libraries',
         action: async () => {
           const arrLibs = [
             // Vue Demi (for Vue 2/3 compatibility libraries)
@@ -80,7 +80,7 @@ export default {
           ];
 
           for (const libUrl of arrLibs) {
-            currentAction.value = t('message.loading', { item: libUrl });
+            currentAction.value = t('message.loader.loading', { item: libUrl });
             await loadJs(libUrl);
           }
 
@@ -89,40 +89,40 @@ export default {
       },
       {
         id: 'components',
-        label: t('message.components') || 'Components',
+        label: t('message.loader.components') || 'Components',
         action: async () => {
-          await safeFetch('./vue/App.vue');
+          await safeFetch('/vue/App.vue');
           await sleep(500);
         }
       },
       {
         id: 'store',
-        label: t('message.store') || 'Store',
+        label: t('message.loader.store') || 'Store',
         action: async () => {
-          await safeImport('../assets/js/stores/main.js');
+          await safeImport('/assets/js/stores/main.js');
           await sleep(500);
         }
       },
       {
         id: 'app',
-        label: t('message.app') || 'App',
+        label: t('message.loader.app') || 'App',
         action: async () => {
-          currentAction.value = t('message.starting_app');
+          currentAction.value = t('message.loader.starting_app');
           if (window.initMainApp) {
             const result = await window.initMainApp();
             if (result === false)
-              throw new Error("initMainApp reported failure");
+              throw new Error(t('message.errors.init_failed'));
           } else {
-            throw new Error("initMainApp is not defined");
+            throw new Error(t('message.errors.init_undefined'));
           }
 
           await sleep(500);
         }
       }, {
         id: 'finalizing',
-        label: t('message.finalizing') || 'Finalizing',
+        label: t('message.loader.finalizing') || 'Finalizing',
         action: async () => {
-          currentAction.value = t('message.finalizing') + '...';
+          currentAction.value = t('message.loader.finalizing') + '...';
           await sleep(1500);
         }
       }
@@ -185,8 +185,8 @@ export default {
       } catch (e) {
         console.log('Error during loading stages:', e);
         hasError.value = true;
-        const msg = e instanceof Error ? e.message : (typeof e === 'string' ? e : 'Unknown error');
-        currentAction.value = t('message.error_loading', { stage: currentStage.value, message: msg });
+        const msg = e instanceof Error ? e.message : (typeof e === 'string' ? e : t('message.errors.unknown_error'));
+        currentAction.value = t('message.loader.error_loading', { stage: currentStage.value, message: msg });
         console.error(e);
       }
 
@@ -198,10 +198,10 @@ export default {
       let finalUrl = src;
       try {
         const res = await fetch(src);
-        if (!res.ok) throw new Error(`Failed to load ${src}: ${res.status} ${res.statusText}`);
+        if (!res.ok) throw new Error(t('message.errors.failed_to_load', { item: src, message: `${res.status} ${res.statusText}` }));
         finalUrl = res.url;
       } catch (e) {
-        throw new Error(`Network error checking ${src}: ${e.message}`);
+        throw new Error(t('message.errors.network_error_checking', { item: src, message: e.message }));
       }
 
       return new Promise((resolve, reject) => {
@@ -212,7 +212,7 @@ export default {
         const errorHandler = (event) => {
           if (event.filename === finalUrl || event.filename === src) {
             cleanup();
-            reject(new Error(`Script execution failed: ${event.message}`));
+            reject(new Error(t('message.errors.script_execution_failed', { message: event.message })));
           }
         };
 
@@ -231,7 +231,7 @@ export default {
 
         script.onerror = () => {
           cleanup();
-          reject(new Error(`Failed to load script tag: ${src}`));
+          reject(new Error(t('message.errors.failed_to_load_script', { item: src })));
         };
 
         document.head.appendChild(script);

@@ -22,7 +22,7 @@
         <div style="margin-top: 15px;" :style="{ color: hasError ? '#dc3545' : '#555' }">
           {{ currentAction }} <span v-if="!hasError">({{ Math.round(totalProgress) }}%)</span>
         </div>
-        <img src="../assets/img/loader.gif" style="width: 50px; margin-top: 20px;" onerror="this.style.display='none'" />
+        <img src="/assets/img/loader.gif" style="width: 50px; margin-top: 20px;" onerror="this.style.display='none'" />
       </div>
     </div>
   </transition>
